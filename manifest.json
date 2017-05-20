@@ -10,9 +10,8 @@
   },
   "content_scripts": [
     {
-      "matches": [ "https://www.facebook.com/*" ],
-      "css": [ "styles.css" ],
-      "js": [ "jquerymin.js", "businessLogics.js" ]
+      "matches": [ "https://www.facebook.com/*" ],      
+      "js": [ "businessLogics.js" ]
     }
   ],
   "permissions": [

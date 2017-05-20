@@ -4,23 +4,42 @@ fakeNewsBuster.profileLinkString = "profileLink";
 // verify profiles every 5 seconds
 fakeNewsBuster.verifyInterval = 5000;
 
-fakeNewsBuster.getAllProfileLinks = function () {
-    var profileLinks = document.getElementsByClassName(fakeNewsBuster.profileLinkString);
-    return profileLinks;
+// background color for the correct news anchor tags
+fakeNewsBuster.validNewsAnchorBackgroundColor = "green";
+
+// background color for the fake news anchor tags
+fakeNewsBuster.fakeNewsAnchorBackgroundColor = "red";
+
+// gets all news sources from facebook feed
+fakeNewsBuster.getAllNewsSources = function () {
+    var newsSources = document.querySelectorAll('[data-hovercard-referer="NEWSFEED"]');
+    return newsSources;
 }
 
-fakeNewsBuster.checkValidityOfProfilesLinks = function () {
-    var profileLinksInPage = fakeNewsBuster.getAllProfileLinks();
-    if (profileLinksInPage && profileLinksInPage.length > 0) {
-        for (var i = 0; i < profileLinksInPage.length; i++) {
-            profileLinksInPage[i].innerHTML = profileLinksInPage[i].innerHTML + " Anurag";
+// gets whether the link is valid or not
+fakeNewsBuster.checkValidityOfLinkOrSource = function (anchorElement) {
+    return true;
+}
+
+fakeNewsBuster.updateUserInterfaceBasedOnValidityOfNewsSources = function () {
+    var newsSourcesInPage = fakeNewsBuster.getAllNewsSources();
+    if (newsSourcesInPage && newsSourcesInPage.length > 0) {
+        for (var i = 0; i < newsSourcesInPage.length; i++) {
+            var anchorElement = newsSourcesInPage[i];           
+            var isSourceValid = fakeNewsBuster.checkValidityOfLinkOrSource(anchorElement);
+
+            if (isSourceValid) {
+                anchorElement.style.backgroundColor = fakeNewsBuster.validNewsAnchorBackgroundColor;
+            } else {
+                anchorElement.style.backgroundColor = fakeNewsBuster.fakeNewsAnchorBackgroundColor;
+            }
         }
     }
 }
 
-fakeNewsBuster.checkValidityOfProfilesLinks();
+fakeNewsBuster.updateUserInterfaceBasedOnValidityOfNewsSources();
 
-window.setInterval(fakeNewsBuster.checkValidityOfProfilesLinks, fakeNewsBuster.verifyInterval);
+window.setInterval(fakeNewsBuster.updateUserInterfaceBasedOnValidityOfNewsSources, fakeNewsBuster.verifyInterval);
 
 
 //var fakeNewsBuster = {};

@@ -26,15 +26,15 @@ fakeNewsBuster.isLinkInternalToFacebook = function (linkUrl) {
 
 // gets all news sources from facebook feed
 fakeNewsBuster.getAllNewsSources = function () {
-    var allAnchorTags = document.getElementsByTagName("a");
+    var allAnchorTags = document.querySelectorAll('[target="_blank"]');
     var newsSources = [];
     for (var i = 0; i < allAnchorTags.length; i++) {
         var linkReference = allAnchorTags[i].href;
-
-        // if the link is an external URL
-        if(!fakeNewsBuster.isLinkInternalToFacebook(linkReference))
-        {
-            newsSources.push(allAnchorTags[i]);
+        if (linkReference) {
+            // if the link is an external URL
+            if (!fakeNewsBuster.isLinkInternalToFacebook(linkReference)) {
+                newsSources.push(allAnchorTags[i]);
+            }
         }
     }
     return newsSources;

@@ -1,23 +1,27 @@
 ﻿var fakeNewsBuster = {};
-fakeNewsBuster.hyperfeedString = "hyperfeed";
+fakeNewsBuster.profileLinkString = "profileLink";
 
-fakeNewsBuster.getAllDivs = function () {
-    var divs = document.getElementsByTagName("div");
-    alert("Div count: " + divs.length);
+// verify profiles every 5 seconds
+fakeNewsBuster.verifyInterval = 5000;
+
+fakeNewsBuster.getAllProfileLinks = function () {
+    var profileLinks = document.getElementsByClassName(fakeNewsBuster.profileLinkString);
+    return profileLinks;
 }
 
-var divsInPage = fakeNewsBuster.getAllDivs();
-if (divsInPage && divsInPage.length > 0) {
-    for (var i = 0; i < divsInPage.length; i++) {
-        var divId = divsInPage[i].id;
-        if (divId) {
-            if (divId.indexOf(fakeNewsBuster.hyperfeedString) !== -1) {
-                console.log("Found div: " + divId);
-                divsInPage[i].style.backgroundColor = "red";
-            }
+fakeNewsBuster.checkValidityOfProfilesLinks = function () {
+    var profileLinksInPage = fakeNewsBuster.getAllProfileLinks();
+    if (profileLinksInPage && profileLinksInPage.length > 0) {
+        for (var i = 0; i < profileLinksInPage.length; i++) {
+            profileLinksInPage[i].innerHTML = profileLinksInPage[i].innerHTML + " Anurag";
         }
     }
 }
+
+fakeNewsBuster.checkValidityOfProfilesLinks();
+
+window.setInterval(fakeNewsBuster.checkValidityOfProfilesLinks, fakeNewsBuster.verifyInterval);
+
 
 //var fakeNewsBuster = {};
 //fakeNewsBuster.alexaRankingUrl = "http://data.alexa.com/data?cli=10&dat=snbamz&url=";

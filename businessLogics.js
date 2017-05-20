@@ -1,5 +1,6 @@
 ﻿var fakeNewsBuster = {};
 fakeNewsBuster.profileLinkString = "profileLink";
+fakeNewsBuster.facebookUrls = ["https://www.facebook.com", "https://l.facebook.com"];
 
 // verify profiles every 5 seconds
 fakeNewsBuster.verifyInterval = 5000;
@@ -10,9 +11,32 @@ fakeNewsBuster.validNewsAnchorBackgroundColor = "green";
 // background color for the fake news anchor tags
 fakeNewsBuster.fakeNewsAnchorBackgroundColor = "red";
 
+// checks if the link is internal to Facebook
+fakeNewsBuster.isLinkInternalToFacebook = function (linkUrl) {
+    if (linkUrl) {
+        for (var i = 0; i < fakeNewsBuster.facebookUrls.length; i++) {
+            if(linkUrl.startsWith(fakeNewsBuster.facebookUrls[i])){
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
 // gets all news sources from facebook feed
 fakeNewsBuster.getAllNewsSources = function () {
-    var newsSources = document.querySelectorAll('[data-hovercard-referer="NEWSFEED"]');
+    var allAnchorTags = document.getElementsByTagName("a");
+    var newsSources = [];
+    for (var i = 0; i < allAnchorTags.length; i++) {
+        var linkReference = allAnchorTags[i].href;
+
+        // if the link is an external URL
+        if(!fakeNewsBuster.isLinkInternalToFacebook(linkReference))
+        {
+            newsSources.push(allAnchorTags[i]);
+        }
+    }
     return newsSources;
 }
 
